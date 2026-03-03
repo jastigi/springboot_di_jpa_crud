@@ -41,7 +41,9 @@ public class ProductServiceImpl implements ProductService {
         if (productOptional.isPresent()) {
             Product productDB = productOptional.orElseThrow(() -> new RuntimeException("Product not found"));
             productDB.setName(product.getName());
+            productDB.setDescription(product.getDescription());
             productDB.setPrice(product.getPrice());
+            productDB.setSku(product.getSku());
             return Optional.of(repository.save(productDB));
         }
         return productOptional;
@@ -55,6 +57,12 @@ public class ProductServiceImpl implements ProductService {
             repository.delete(productDb);
         });
         return productOptional;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsBySku(String sku) {
+        return repository.existsBySku(sku);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.jastigi.curso.springboot.app.springboot_crud.entities;
 
+import com.jastigi.curso.springboot.app.springboot_crud.validation.IsExistDb;
 import com.jastigi.curso.springboot.app.springboot_crud.validation.IsRequired;
 
 import jakarta.persistence.Entity;
@@ -18,6 +19,11 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @IsExistDb
+    @IsRequired
+    private String sku;
+
     @NotBlank(message = "{NotBlank.product.name}")
     @Size(min = 3, max = 20, message = "{Size.product.name}")
     private String name;
@@ -58,6 +64,14 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
 }
