@@ -2,6 +2,8 @@ package com.jastigi.curso.springboot.app.springboot_crud.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,15 +28,17 @@ public class User {
 
     @Column(unique = true)
     @NotBlank
-    @Size(min = 8, max = 20)
+    @Size(min = 4, max = 20)
     private String username;
 
     @NotBlank
-    @Size(min = 8, max = 60)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    private boolean enabled;
+
     @ManyToMany
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
             @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
     private List<Role> roles;
 
@@ -79,6 +83,14 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 }
