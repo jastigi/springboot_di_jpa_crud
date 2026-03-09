@@ -14,11 +14,13 @@ import com.jastigi.curso.springboot.app.springboot_crud.entities.User;
 import com.jastigi.curso.springboot.app.springboot_crud.repositories.RoleRepository;
 import com.jastigi.curso.springboot.app.springboot_crud.repositories.UserRepository;
 
+import jakarta.validation.ConstraintValidatorContext;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -29,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
-        return (List<User>) userRepository.findAll();
+        return (List<User>) repository.findAll();
     }
 
     @Override
@@ -50,7 +52,14 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return userRepository.save(user);
+        return repository.save(user);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+
+        return repository.existsByUsername(username);
+
     }
 
 }
