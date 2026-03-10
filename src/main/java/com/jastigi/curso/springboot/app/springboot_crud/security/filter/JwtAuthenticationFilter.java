@@ -71,7 +71,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username = user.getUsername();
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
 
-        Claims claims = Jwts.claims().add(username, roles).build();
+        Claims claims = Jwts.claims().add(username, new ObjectMapper().writeValueAsString(roles)).build();
 
         String token = Jwts.builder().subject(username)
                 .claims(claims)
