@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,6 +54,11 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
 
             String username = claims.getSubject();
             Object authoritiesClaims = claims.get("authorities");
+
+            if (authoritiesClaims == null) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             Collection<? extends GrantedAuthority> authorities = Arrays.asList(
                     new ObjectMapper()
